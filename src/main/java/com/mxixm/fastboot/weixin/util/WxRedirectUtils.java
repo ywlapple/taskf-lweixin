@@ -99,7 +99,7 @@ public class WxRedirectUtils {
             url = url.substring(3);
         }
 
-        String redirectUrl = WxUrlUtils.mediaUrl(baseUrl, url);
+        String redirectUrl = WxUrlUtils.mediaUrl(baseUrl, url );
         if (!isRedirect || !WxUrlUtils.isCallbackUrl(baseUrl, redirectUrl)) {
             return redirectUrl;
         }

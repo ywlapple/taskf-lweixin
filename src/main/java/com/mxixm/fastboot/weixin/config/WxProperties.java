@@ -714,6 +714,5 @@ public class WxProperties implements InitializingBean {
 	public void setPay(Pay pay) {
 		this.pay = pay;
 	}
-
     
 }

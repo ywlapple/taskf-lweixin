@@ -64,10 +64,10 @@ public class WxMenuManager implements EnvironmentAware, ApplicationListener<Appl
     private WxMenu wxMenu;
 
     private boolean autoCreate;
-
+    
     private Environment environment;
 
-    public WxMenuManager(WxApiService wxApiService, WxButtonEventKeyStrategy wxButtonEventKeyStrategy, boolean autoCreate) {
+    public WxMenuManager(WxApiService wxApiService, WxButtonEventKeyStrategy wxButtonEventKeyStrategy, boolean autoCreate ) {
         this.wxApiService = wxApiService;
         this.wxButtonEventKeyStrategy = wxButtonEventKeyStrategy;
         this.autoCreate = autoCreate;

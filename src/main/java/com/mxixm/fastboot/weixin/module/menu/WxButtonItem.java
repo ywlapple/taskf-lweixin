@@ -271,11 +271,11 @@ public class WxButtonItem {
             return this;
         }
 
-        public Builder setUrl(String url) {
+        public Builder setUrl(String url ) {
             // 如果是callbackUrl，则重定向，否则不重定向
             // WxUrlUtils.mediaUrl()
             if (!StringUtils.isEmpty(url)) {
-                this.url = WxUrlUtils.mediaUrl(url);
+                this.url = WxUrlUtils.mediaUrl(url );
                 //this.url = WxUrlUtils.isCallbackUrl(url) ? WxRedirectUtils.redirect(url) : url;
             }
             return this;

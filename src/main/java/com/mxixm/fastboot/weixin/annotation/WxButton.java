@@ -174,5 +174,4 @@ public @interface WxButton {
         MINI_PROGRAM
 
     }
-
 }

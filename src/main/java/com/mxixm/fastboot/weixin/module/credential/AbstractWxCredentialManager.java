@@ -60,12 +60,12 @@ public abstract class AbstractWxCredentialManager {
         long now = Instant.now().toEpochMilli();
         if (this.wxCredentialStore.lock(this.type)) {
             try {
+            	WxCredential wxCredential = this.refreshInternal();
+            	wxCredentialStore.store(this.type, wxCredential.getCredential(), now + wxCredential.getExpiresIn() * 1000);
+            	return wxCredential.getCredential();
                 // 拿到锁之后再判断一次过期时间，如果过期的话视为还没刷新
-                if (wxCredentialStore.expires(this.type) < now) {
-                    WxCredential wxCredential = this.refreshInternal();
-                    wxCredentialStore.store(this.type, wxCredential.getCredential(), now + wxCredential.getExpiresIn() * 1000);
-                    return wxCredential.getCredential();
-                }
+//                if (wxCredentialStore.expires(this.type) < now) {
+//                }
             } finally {
                 // 如果加锁成功了，一定要解锁
                 wxCredentialStore.unlock(this.type);
@@ -95,15 +95,17 @@ public abstract class AbstractWxCredentialManager {
     protected abstract WxCredential refreshInternal();
 
     public String get() {
-        long now = Instant.now().toEpochMilli();
-        long expiresTime = wxCredentialStore.expires(this.type);
-        // 如果当前仍在有效期，但是在刷新期内，异步刷新，并返回当前的值
-        if (now <= expiresTime && expiresTime <= now - tokenRedundance) {
-            executor.execute(() -> this.refresh());
-            return this.wxCredentialStore.get(this.type);
-        } else if (expiresTime < now) {
-            return this.refresh();
-        }
+    	// 
+    	
+//        long now = Instant.now().toEpochMilli();
+//        long expiresTime = wxCredentialStore.expires(this.type);
+//        // 如果当前仍在有效期，但是在刷新期内，异步刷新，并返回当前的值
+//        if (now <= expiresTime && expiresTime <= now - tokenRedundance) {
+//            executor.execute(() -> this.refresh());
+//            return this.wxCredentialStore.get(this.type);
+//        } else if (expiresTime < now) {
+//            return this.refresh();
+//        }
         return this.wxCredentialStore.get(this.type);
     }
 

@@ -109,10 +109,10 @@ public class WxApiExecutor {
             responseEntity = wxApiTemplate.exchange(requestEntity, HttpInputMessage.class);
         } catch (WxApiResultException e) {
             // access_token错误，刷新后重试
-            if (retry && e.getResultCode() == WxApiResultException.Code.INVALID_ACCESS_TOKEN) {
-                wxTokenManager.forceRefresh();
-                return execute(wxApiMethodInfo, args, false);
-            }
+//            if (retry && e.getResultCode() == WxApiResultException.Code.INVALID_ACCESS_TOKEN) {
+//                wxTokenManager.forceRefresh();
+//                return execute(wxApiMethodInfo, args, false);
+//            }
             throw e;
         }
         if (!responseEntity.getStatusCode().is2xxSuccessful()) {

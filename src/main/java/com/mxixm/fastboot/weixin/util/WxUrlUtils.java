@@ -16,6 +16,7 @@
 
 package com.mxixm.fastboot.weixin.util;
 
+import com.mxixm.fastboot.weixin.annotation.WxButton;
 import com.mxixm.fastboot.weixin.module.Wx;
 import org.springframework.util.StringUtils;
 
@@ -44,8 +45,7 @@ public abstract class WxUrlUtils {
      * 实在没有的时候，把流量引给我自己，一般不会有这种情况
      */
     public static String DEFAULT_HOST = "mxixm.com";
-
-    public static String mediaUrl(String requestUrl, String targetUrl) {
+    public static String mediaUrl(String requestUrl, String targetUrl ) {
         String lowerUrl = targetUrl.toLowerCase();
         // 已经包含协议，直接返回
         if (lowerUrl.startsWith(HTTP_PROTOCOL) || lowerUrl.startsWith(HTTPS_PROTOCOL)) {
@@ -55,7 +55,7 @@ public abstract class WxUrlUtils {
         // 先解析出来protocol和host
         // 是否要考虑context-path? request.getContextPath()有可能不是/，可能会带来一些问题。可参考UrlPathHelper
         // 菜单链接可能同样有这个问题
-        String protocol = HTTP_PROTOCOL;
+        String protocol =  HTTP_PROTOCOL ;
         String host = DEFAULT_HOST;
         if (!StringUtils.isEmpty(requestUrl)) {
             URI uri = URI.create(requestUrl);
@@ -86,10 +86,11 @@ public abstract class WxUrlUtils {
         return protocol + RELAX_PROTOCOL + host + BASE_PATH + targetUrl;
     }
 
-    public static String mediaUrl(String targetUrl) {
-        return mediaUrl(Wx.Environment.instance().getCallbackUrl(), targetUrl);
+    
+    public static String mediaUrl(String targetUrl ) {
+    	return mediaUrl(Wx.Environment.instance().getCallbackUrl(), targetUrl );
     }
-
+    
     /**
      * 判断是否是回调地址
      *

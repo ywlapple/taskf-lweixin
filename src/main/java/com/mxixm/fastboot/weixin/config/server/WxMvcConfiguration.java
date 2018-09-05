@@ -16,30 +16,10 @@
 
 package com.mxixm.fastboot.weixin.config.server;
 
-import com.mxixm.fastboot.weixin.annotation.EnableWxMvc;
-import com.mxixm.fastboot.weixin.config.WxProperties;
-import com.mxixm.fastboot.weixin.module.menu.DefaultWxButtonEventKeyStrategy;
-import com.mxixm.fastboot.weixin.module.menu.WxButtonEventKeyStrategy;
-import com.mxixm.fastboot.weixin.module.menu.WxMenuManager;
-import com.mxixm.fastboot.weixin.module.message.WxMessageProcessor;
-import com.mxixm.fastboot.weixin.module.message.WxMessageTemplate;
-import com.mxixm.fastboot.weixin.module.message.support.WxAsyncMessageReturnValueHandler;
-import com.mxixm.fastboot.weixin.module.message.support.WxAsyncMessageTemplate;
-import com.mxixm.fastboot.weixin.module.message.support.WxSyncMessageReturnValueHandler;
-import com.mxixm.fastboot.weixin.module.user.WxUserProvider;
-import com.mxixm.fastboot.weixin.module.web.session.WxSessionManager;
-import com.mxixm.fastboot.weixin.mvc.advice.WxMediaResponseBodyAdvice;
-import com.mxixm.fastboot.weixin.mvc.annotation.WxMappingHandlerMapping;
-import com.mxixm.fastboot.weixin.mvc.converter.WxXmlMessageConverter;
-import com.mxixm.fastboot.weixin.mvc.param.WxArgumentResolver;
-import com.mxixm.fastboot.weixin.mvc.processor.WxMappingReturnValueHandler;
-import com.mxixm.fastboot.weixin.mvc.processor.WxMessageReturnValueHandler;
-import com.mxixm.fastboot.weixin.service.WxApiService;
-import com.mxixm.fastboot.weixin.service.WxBuildinVerifyService;
-import com.mxixm.fastboot.weixin.service.WxXmlCryptoService;
-import com.mxixm.fastboot.weixin.service.invoker.common.WxMediaResourceMessageConverter;
-import com.mxixm.fastboot.weixin.web.WxOAuth2Interceptor;
-import com.mxixm.fastboot.weixin.web.WxUserManager;
+import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
@@ -63,12 +43,40 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
-import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-import java.util.List;
+import com.mxixm.fastboot.weixin.annotation.EnableWxMvc;
+import com.mxixm.fastboot.weixin.config.WxProperties;
+import com.mxixm.fastboot.weixin.module.menu.DefaultWxButtonEventKeyStrategy;
+import com.mxixm.fastboot.weixin.module.menu.WxButtonEventKeyStrategy;
+import com.mxixm.fastboot.weixin.module.menu.WxMenuManager;
+import com.mxixm.fastboot.weixin.module.message.WxMessageProcessor;
+import com.mxixm.fastboot.weixin.module.message.WxMessageTemplate;
+import com.mxixm.fastboot.weixin.module.message.support.WxAsyncMessageTemplate;
+import com.mxixm.fastboot.weixin.module.user.WxUserProvider;
+import com.mxixm.fastboot.weixin.module.web.session.WxSessionManager;
+import com.mxixm.fastboot.weixin.mvc.advice.WxMediaResponseBodyAdvice;
+import com.mxixm.fastboot.weixin.mvc.annotation.WxMappingHandlerMapping;
+import com.mxixm.fastboot.weixin.mvc.converter.WxXmlMessageConverter;
+import com.mxixm.fastboot.weixin.mvc.param.WxArgumentResolver;
+import com.mxixm.fastboot.weixin.mvc.processor.WxMappingReturnValueHandler;
+import com.mxixm.fastboot.weixin.mvc.processor.WxMessageReturnValueHandler;
+import com.mxixm.fastboot.weixin.service.WxApiService;
+import com.mxixm.fastboot.weixin.service.WxBuildinVerifyService;
+import com.mxixm.fastboot.weixin.service.WxXmlCryptoService;
+import com.mxixm.fastboot.weixin.service.invoker.common.WxMediaResourceMessageConverter;
+import com.mxixm.fastboot.weixin.web.WxOAuth2Interceptor;
+import com.mxixm.fastboot.weixin.web.WxUserManager;
 
 /**
  * FastBootWeixin WxBuildinMvcConfiguration
@@ -91,6 +99,8 @@ public class WxMvcConfiguration implements ImportAware {
     private final WxApiService wxApiService;
 
     private boolean menuAutoCreate = true;
+    
+    private boolean ssl = false;
 
     public WxMvcConfiguration(WxProperties wxProperties, BeanFactory beanFactory, @Lazy WxMessageProcessor wxMessageProcessor, @Lazy WxApiService wxApiService) {
         this.wxProperties = wxProperties;
